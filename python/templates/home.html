@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel= "stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <title>Python GeoChart</title>
+</head>
+<body>
+<div class="container py-5">
+<div class="card mx-auto" style="max-width: 500px;">
+<div class="card-body">
+<div id="regions_div"></div>
+</div>
+</div>
+<table class="table">
+<thead>
+<tr>
+  <th>#</th>
+  <th>Country</th>
+  <th>Code</th>
+  <th>Total View</th>
+</tr>
+</thead>
+<tbody>
+{% for data in regions_data %}
+  <tr>
+    <td>{{ data.id }}</td>
+    <td>{{ data.country_name }}</td>
+    <td>{{ data.country_code }}</td>
+    <td>{{ data.total_views }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+      google.charts.load('current', {
+        'packages':['geochart'],
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+      function drawRegionsMap() {
+        var data = google.visualization.arrayToDataTable([
+          ["Country", "Total Views"],
+        {% for data in regions_data %}
+          ["{{ data.country_code }}", {{ data.total_views }}],
+        {% endfor %}
+        ]);
+
+        var options = {};
+
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+        chart.draw(data, options);
+      }
+</script>
+</body>
+</html>
