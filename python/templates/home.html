@@ -25,7 +25,7 @@
 <tbody>
 {% for data in regions_data %}
   <tr>
-    <td>{{ data.id }}</td>
+    <td>{{ loop.index }}</td>
     <td>{{ data.country_name }}</td>
     <td>{{ data.country_code }}</td>
     <td>{{ data.total_views }}</td>
